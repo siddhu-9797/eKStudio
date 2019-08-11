@@ -1,0 +1,1296 @@
+{% extends "makeup.html"%}
+{% block content %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script >
+  var tem, tem2;
+  $(document).ready(function(){
+  $('li').bind('dragstart', function(event) {
+    tem = event.target.getAttribute('id');
+    event.originalEvent.dataTransfer.setData("text/plain",  event.target.getAttribute('id'));
+    document.getElementById("lion").value = tem; 
+   
+    
+  });
+  
+
+  $('ul').bind('dragover', function(event) {
+    event.preventDefault();
+  });
+
+  $('ul').bind('dragenter', function(event) {
+    $(this).addClass("over");
+  });
+
+  $('ul').bind('dragleave drop', function(event) {
+    $(this).removeClass("over");
+  });
+
+  $('li').bind('drop', function(event) {
+    return false;
+  });
+
+  $('ul').bind('drop', function(event) {
+    var listitem = event.originalEvent.dataTransfer.getData("text/plain");
+    event.target.appendChild(document.getElementById(listitem));
+    event.preventDefault();
+    tem2 = event.target.getAttribute('id');
+    document.getElementById("tiger").value = tem2;
+    document.getElementById('mail').click();
+
+  });
+});
+
+
+
+
+
+
+
+function doFunction(itsid){
+  document.getElementById("lion").value = itsid;
+  document.getElementById("changer").value = 2;
+  document.getElementById('mail').click();
+  
+}
+
+
+</script>
+ 
+ 
+ 
+ 
+ 
+ <style>
+    
+
+
+
+
+#board div h3 {display: inline-block; width: 17%; margin: 1%; text-align: center;}
+#collapseOne2 div h3 {display: inline-block; width: 17%; margin: 1%; text-align: center;}
+#collapseOne3 div h3 {display: inline-block; width: 17%; margin: 1%; text-align: center;}
+#collapseOne4 div h3 {display: inline-block; width: 17%; margin: 1%; text-align: center;}
+#collapseOne5 div h3 {display: inline-block; width: 17%; margin: 1%; text-align: center;}
+#collapseOne6 div h3 {display: inline-block; width: 17%; margin: 1%; text-align: center;}
+#lion 
+    {    
+        display:none;
+    }        
+#tiger 
+    {    
+        display:none;
+    } 
+#mail 
+    {    
+        display:none;
+    } 
+
+
+</style>
+  
+
+
+
+{% if current_user.is_authenticated %}
+    <legend class="form-group container" style="text-align: center; padding-top: 1%">Review All Tasks</legend>
+  
+  <!--Accordion wrapper-->
+    <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+        <!-- Accordion card -->
+        <div class="card">
+    
+        <!-- Card header -->
+        <div class="card-header" role="tab" id="headingOne1">
+            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true"
+            aria-controls="collapseOne1">
+            <h5 class="mb-0" style="text-align: left">
+                 Design & Analysis <i class="fas fa-angle-down rotate-icon"></i>
+            </h5>
+            </a>
+        </div>
+    
+        <!-- Card body -->
+        <div id="board">
+        <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1"
+            data-parent="#accordionEx"  >
+            <div class="card-body" >
+                <div>
+                    <h3>In Analysis</h3><h3>In Design</h3><h3>Review & Approvals</h3><h3>DoR Prep</h3><h3>Dev Ready</h3>
+                  </div>
+                  <ul id="todo" style = "border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+                  
+                {%for task in range (l)%}
+                      
+                      {%if tasks[task].branch == 'todo' and tasks[task].accordion == '1' %}
+                      <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                      padding: 5px;
+                      background: #f5f5f5;
+                      border-radius: 5px;
+                      margin: 0 0 5px;">
+                      
+                      
+                      <div class="card" style="width: auto;">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ tasks[task].title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            <p class="card-text">{{ tasks[task].summary }}</p>
+                            <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                            <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                          </div>
+
+                        </div>
+                      
+                        </li>
+                      {%endif%}
+                {%endfor%}
+                
+                  </ul>
+                  <ul id="inprogress" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+                  {%for task in range (l)%}
+                      
+                  {%if tasks[task].branch == 'inprogress' and tasks[task].accordion == '1'%}
+                  <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                  padding: 5px;
+                  background: #f5f5f5;
+                  border-radius: 5px;
+                  margin: 0 0 5px;">
+                  
+                  
+                  <div class="card" style="width: auto;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ tasks[task].title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"></h6>
+                        <p class="card-text">{{ tasks[task].summary }}</p>
+                        <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                        <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                   </div>
+
+                    </div>
+                  
+                    </li>
+                  {%endif%}
+            {%endfor%}
+
+                    </ul>
+                    <ul id="inreview" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                      {%for task in range (l)%}
+                                            
+                      {%if tasks[task].branch == 'inreview' and tasks[task].accordion == '1'%}
+                      <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                      padding: 5px;
+                      background: #f5f5f5;
+                      border-radius: 5px;
+                      margin: 0 0 5px;">
+
+
+                      <div class="card" style="width: auto;">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ tasks[task].title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            <p class="card-text">{{ tasks[task].summary }}</p>
+                            <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                            <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                          </div>
+
+                        </div>
+
+                        </li>
+                      {%endif%}
+                      {%endfor%}
+                    </ul>
+
+                    <ul id="done" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'done' and tasks[task].accordion == '1'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+
+                    <ul id="export" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'export' and tasks[task].accordion == '1'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                    
+                    
+            </div>
+        </div>
+        </div>
+        </div>
+      
+
+<!--End of 1st accordion......................................................................................................................-->
+    
+        <div class="card">
+    
+            <!-- Card header -->
+            <div class="card-header" role="tab" id="headingTwo2">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne2" aria-expanded="false"
+                aria-controls="collapseTwo2">
+                <h5 class="mb-0" style="text-align: left">
+                    Application Development & Testing<i class="fas fa-angle-down rotate-icon"></i>
+                </h5>
+                </a>
+            </div>
+        
+            <!-- Card body -->
+            <div id="collapseOne2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2"
+                data-parent="#accordionEx">
+                <div class="card-body">
+                  <div>
+                    <h3>To Do</h3><h3>In Development</h3><h3>In Testing</h3><h3>Review & Approvals</h3><h3>Ready for Pre-Prod</h3>
+                  </div>
+                  <ul id="todo" style = "border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+                  
+                {%for task in range (l)%}
+                      
+                      {%if tasks[task].branch == 'todo' and tasks[task].accordion == '2'%}
+                      <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                      padding: 5px;
+                      background: #f5f5f5;
+                      border-radius: 5px;
+                      margin: 0 0 5px;">
+                      
+                      
+                      <div class="card" style="width: auto;">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ tasks[task].title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            <p class="card-text">{{ tasks[task].summary }}</p>
+                            <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                            <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                          </div>
+
+                        </div>
+                      
+                        </li>
+                      {%endif%}
+                {%endfor%}
+                
+                  </ul>
+                  <ul id="inprogress" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+                  {%for task in range (l)%}
+                      
+                  {%if tasks[task].branch == 'inprogress' and tasks[task].accordion == '2'%}
+                  <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                  padding: 5px;
+                  background: #f5f5f5;
+                  border-radius: 5px;
+                  margin: 0 0 5px;">
+                  
+                  
+                  <div class="card" style="width: auto;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ tasks[task].title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"></h6>
+                        <p class="card-text">{{ tasks[task].summary }}</p>
+                        <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                        <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                   </div>
+
+                    </div>
+                  
+                    </li>
+                  {%endif%}
+            {%endfor%}
+
+                    </ul>
+                    <ul id="inreview" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                      {%for task in range (l)%}
+                                            
+                      {%if tasks[task].branch == 'inreview' and tasks[task].accordion == '2'%}
+                      <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                      padding: 5px;
+                      background: #f5f5f5;
+                      border-radius: 5px;
+                      margin: 0 0 5px;">
+
+
+                      <div class="card" style="width: auto;">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ tasks[task].title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            <p class="card-text">{{ tasks[task].summary }}</p>
+                            <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                            <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                          </div>
+
+                        </div>
+
+                        </li>
+                      {%endif%}
+                      {%endfor%}
+                    </ul>
+
+                    <ul id="done" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'done' and tasks[task].accordion == '2'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+
+                <ul id="export" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'export' and tasks[task].accordion == '2'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                    
+                </div>
+            </div>
+            </div>
+<!--End of 2nd accordion......................................................................................................................-->
+
+            <div class="card">
+    
+              <!-- Card header -->
+              <div class="card-header" role="tab" id="headingThree3">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne3" aria-expanded="false"
+                  aria-controls="collapseThree3">
+                  <h5 class="mb-0" style="text-align: left">
+                    Service Introduction<i class="fas fa-angle-down rotate-icon"></i>
+                  </h5>
+                  </a>
+              </div>
+          
+              <!-- Card body -->
+              <div id="collapseOne3" class="collapse" role="tabpanel" aria-labelledby="headingThree3"
+                  data-parent="#accordionEx">
+                  <div class="card-body">
+                    <div>
+                      <h3>Release Testing (NFT / Pen)</h3><h3>SI Checks</h3><h3>Awaiting Prod Dep</h3><h3>In Prod Test / Monitor</h3><h3>Delivered to Run</h3>
+                      </div>
+                    <ul id="todo" style = "border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                    width: 18%;
+                    margin: 0 0.5%;
+                    display: inline-block;
+                    vertical-align: top;">
+                    
+                  {%for task in range (l)%}
+                        
+                        {%if tasks[task].branch == 'todo' and tasks[task].accordion == '3'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+                        
+                        
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                            </div>
+  
+                          </div>
+                        
+                          </li>
+                        {%endif%}
+                  {%endfor%}
+                  
+                    </ul>
+                    <ul id="inprogress" style="border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                    width: 18%;
+                    margin: 0 0.5%;
+                    display: inline-block;
+                    vertical-align: top;">
+                    {%for task in range (l)%}
+                        
+                    {%if tasks[task].branch == 'inprogress' and tasks[task].accordion == '3'%}
+                    <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                    padding: 5px;
+                    background: #f5f5f5;
+                    border-radius: 5px;
+                    margin: 0 0 5px;">
+                    
+                    
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                          <h5 class="card-title">{{ tasks[task].title }}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted"></h6>
+                          <p class="card-text">{{ tasks[task].summary }}</p>
+                          <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                          <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                     </div>
+  
+                      </div>
+                    
+                      </li>
+                    {%endif%}
+              {%endfor%}
+  
+                      </ul>
+                      <ul id="inreview" style="border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                    width: 18%;
+                    margin: 0 0.5%;
+                    display: inline-block;
+                    vertical-align: top;">
+  
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'inreview' and tasks[task].accordion == '3' %}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+  
+  
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                            </div>
+  
+                          </div>
+  
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                      </ul>
+  
+                      <ul id="done" style="border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 10px;
+                    width: 18%;
+                    margin: 0 0.5%;
+                    display: inline-block;
+                    vertical-align: top;">
+  
+                          {%for task in range (l)%}
+                                                
+                          {%if tasks[task].branch == 'done' and tasks[task].accordion == '3'%}
+                          <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                          padding: 5px;
+                          background: #f5f5f5;
+                          border-radius: 5px;
+                          margin: 0 0 5px;">
+  
+  
+                          <div class="card" style="width: auto;">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                <p class="card-text">{{ tasks[task].summary }}</p>
+                                <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              </div>
+  
+                            </div>
+  
+                            </li>
+                          {%endif%}
+                          {%endfor%}
+                      </ul>
+  
+                      <ul id="export" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'export' and tasks[task].accordion == '3'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                    
+                  </div>
+              </div>
+              </div>
+<!--End of 3rd accordion......................................................................................................................-->
+
+
+              <div class="card">
+    
+                <!-- Card header -->
+                <div class="card-header" role="tab" id="headingFour4">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne4" aria-expanded="false"
+                    aria-controls="collapseFour4">
+                    <h5 class="mb-0" style="text-align: left">
+                      Business Change / TOM (for large programmes only) - Docs, Processes & Training<i class="fas fa-angle-down rotate-icon"></i>
+                    </h5>
+                    </a>
+                </div>
+            
+                <!-- Card body -->
+                <div id="collapseOne4" class="collapse" role="tabpanel" aria-labelledby="headingFour4"
+                    data-parent="#accordionEx">
+                    <div class="card-body">
+                      <div>
+                        <h3>To Do</h3><h3>In Development</h3><h3>In Testing</h3><h3>Review & Approvals</h3><h3>Ready for Pre-Prod</h3>
+                      </div>
+                      <ul id="todo" style = "border: 1px solid #ccc;
+                      border-radius: 5px;
+                      padding: 10px;
+                      width: 18%;
+                      margin: 0 0.5%;
+                      display: inline-block;
+                      vertical-align: top;">
+                      
+                    {%for task in range (l)%}
+                          
+                          {%if tasks[task].branch == 'todo' and tasks[task].accordion == '4'%}
+                          <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                          padding: 5px;
+                          background: #f5f5f5;
+                          border-radius: 5px;
+                          margin: 0 0 5px;">
+                          
+                          
+                          <div class="card" style="width: auto;">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                <p class="card-text">{{ tasks[task].summary }}</p>
+                                <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              </div>
+    
+                            </div>
+                          
+                            </li>
+                          {%endif%}
+                    {%endfor%}
+                    
+                      </ul>
+                      <ul id="inprogress" style="border: 1px solid #ccc;
+                      border-radius: 5px;
+                      padding: 10px;
+                      width: 18%;
+                      margin: 0 0.5%;
+                      display: inline-block;
+                      vertical-align: top;">
+                      {%for task in range (l)%}
+                          
+                      {%if tasks[task].branch == 'inprogress'%}
+                      <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                      padding: 5px;
+                      background: #f5f5f5;
+                      border-radius: 5px;
+                      margin: 0 0 5px;">
+                      
+                      
+                      <div class="card" style="width: auto;">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ tasks[task].title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            <p class="card-text">{{ tasks[task].summary }}</p>
+                            <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                            <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                       </div>
+    
+                        </div>
+                      
+                        </li>
+                      {%endif%}
+                {%endfor%}
+    
+                        </ul>
+                        <ul id="inreview" style="border: 1px solid #ccc;
+                      border-radius: 5px;
+                      padding: 10px;
+                      width: 18%;
+                      margin: 0 0.5%;
+                      display: inline-block;
+                      vertical-align: top;">
+    
+                          {%for task in range (l)%}
+                                                
+                          {%if tasks[task].branch == 'inreview' and tasks[task].accordion == '4'%}
+                          <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                          padding: 5px;
+                          background: #f5f5f5;
+                          border-radius: 5px;
+                          margin: 0 0 5px;">
+    
+    
+                          <div class="card" style="width: auto;">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                <p class="card-text">{{ tasks[task].summary }}</p>
+                                <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              </div>
+    
+                            </div>
+    
+                            </li>
+                          {%endif%}
+                          {%endfor%}
+                        </ul>
+    
+                        <ul id="done" style="border: 1px solid #ccc;
+                      border-radius: 5px;
+                      padding: 10px;
+                      width: 18%;
+                      margin: 0 0.5%;
+                      display: inline-block;
+                      vertical-align: top;">
+    
+                            {%for task in range (l)%}
+                                                  
+                            {%if tasks[task].branch == 'done' and tasks[task].accordion == '4'%}
+                            <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                            padding: 5px;
+                            background: #f5f5f5;
+                            border-radius: 5px;
+                            margin: 0 0 5px;">
+    
+    
+                            <div class="card" style="width: auto;">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                  <p class="card-text">{{ tasks[task].summary }}</p>
+                                  <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                  <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                                </div>
+    
+                              </div>
+    
+                              </li>
+                            {%endif%}
+                            {%endfor%}
+                        </ul>
+    
+                        <ul id="export" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'export' and tasks[task].accordion == '4'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                    
+                    </div>
+                </div>
+                </div>
+
+<!--End of 4th accordion......................................................................................................................-->
+
+                <div class="card">
+    
+                  <!-- Card header -->
+                  <div class="card-header" role="tab" id="headingFive5">
+                      <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne5" aria-expanded="false"
+                      aria-controls="collapseFive5">
+                      <h5 class="mb-0" style="text-align: left">
+                        External Dependencies (e.g. Infrastructure / Platform / Procurement / Finance Deliverables)
+                        <i class="fas fa-angle-down rotate-icon"></i>
+                      </h5>
+                      </a>
+                  </div>
+              
+                  <!-- Card body -->
+                  <div id="collapseOne5" class="collapse" role="tabpanel" aria-labelledby="headingFive5"
+                      data-parent="#accordionEx">
+                      <div class="card-body">
+                        <div>
+                          <h3>To Do</h3><h3>In Development</h3><h3>In Testing</h3><h3>Review & Approvals</h3><h3>Ready for Pre-Prod</h3>
+                        </div>
+                        <ul id="todo" style = "border: 1px solid #ccc;
+                        border-radius: 5px;
+                        padding: 10px;
+                        width: 18%;
+                        margin: 0 0.5%;
+                        display: inline-block;
+                        vertical-align: top;">
+                        
+                      {%for task in range (l)%}
+                            
+                            {%if tasks[task].branch == 'todo' and tasks[task].accordion == '5'%}
+                            <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                            padding: 5px;
+                            background: #f5f5f5;
+                            border-radius: 5px;
+                            margin: 0 0 5px;">
+                            
+                            
+                            <div class="card" style="width: auto;">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                  <p class="card-text">{{ tasks[task].summary }}</p>
+                                  <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                  <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                                </div>
+      
+                              </div>
+                            
+                              </li>
+                            {%endif%}
+                      {%endfor%}
+                      
+                        </ul>
+                        <ul id="inprogress" style="border: 1px solid #ccc;
+                        border-radius: 5px;
+                        padding: 10px;
+                        width: 18%;
+                        margin: 0 0.5%;
+                        display: inline-block;
+                        vertical-align: top;">
+                        {%for task in range (l)%}
+                            
+                        {%if tasks[task].branch == 'inprogres5' and tasks[task].accordion == '5'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+                        
+                        
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                         </div>
+      
+                          </div>
+                        
+                          </li>
+                        {%endif%}
+                  {%endfor%}
+      
+                          </ul>
+                          <ul id="inreview" style="border: 1px solid #ccc;
+                        border-radius: 5px;
+                        padding: 10px;
+                        width: 18%;
+                        margin: 0 0.5%;
+                        display: inline-block;
+                        vertical-align: top;">
+      
+                            {%for task in range (l)%}
+                                                  
+                            {%if tasks[task].branch == 'inrevi5w' and tasks[task].accordion == '5'%}
+                            <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                            padding: 5px;
+                            background: #f5f5f5;
+                            border-radius: 5px;
+                            margin: 0 0 5px;">
+      
+      
+                            <div class="card" style="width: auto;">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                  <p class="card-text">{{ tasks[task].summary }}</p>
+                                  <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                  <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                                </div>
+      
+                              </div>
+      
+                              </li>
+                            {%endif%}
+                            {%endfor%}
+                          </ul>
+      
+                          <ul id="done" style="border: 1px solid #ccc;
+                        border-radius: 5px;
+                        padding: 10px;
+                        width: 18%;
+                        margin: 0 0.5%;
+                        display: inline-block;
+                        vertical-align: top;">
+      
+                              {%for task in range (l)%}
+                                                    
+                              {%if tasks[task].branch == 'done' and tasks[task].accordion == '5'%}
+                              <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                              padding: 5px;
+                              background: #f5f5f5;
+                              border-radius: 5px;
+                              margin: 0 0 5px;">
+      
+      
+                              <div class="card" style="width: auto;">
+                                  <div class="card-body">
+                                    <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                    <p class="card-text">{{ tasks[task].summary }}</p>
+                                    <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                    <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                                  </div>
+      
+                                </div>
+      
+                                </li>
+                              {%endif%}
+                              {%endfor%}
+                          </ul>
+      
+                          <ul id="export" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'export' and tasks[task].accordion == '5'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                    
+                      </div>
+                  </div>
+                  </div>
+
+<!--End of 5th accordion......................................................................................................................-->
+
+                  <div class="card">
+    
+                    <!-- Card header -->
+                    <div class="card-header" role="tab" id="headingSix6">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne6" aria-expanded="false"
+                        aria-controls="collapseSix6">
+                        <h5 class="mb-0" style="text-align: left">
+                            RAID<i class="fas fa-angle-down rotate-icon"></i>
+                        </h5>
+                        </a>
+                    </div>
+                
+                    <!-- Card body -->
+                    <div id="collapseOne6" class="collapse" role="tabpanel" aria-labelledby="headingSix6"
+                        data-parent="#accordionEx">
+                        <div class="card-body">
+                          <div>
+                            <h3>To Do</h3><h3>In Development</h3><h3>In Testing</h3><h3>Review & Approvals</h3><h3>Ready for Pre-Prod</h3>
+                          </div>
+                          <ul id="todo" style = "border: 1px solid #ccc;
+                          border-radius: 5px;
+                          padding: 10px;
+                          width: 18%;
+                          margin: 0 0.5%;
+                          display: inline-block;
+                          vertical-align: top;">
+                          
+                        {%for task in range (l)%}
+                              
+                              {%if tasks[task].branch == 'todo' and tasks[task].accordion == '6'%}
+                              <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                              padding: 5px;
+                              background: #f5f5f5;
+                              border-radius: 5px;
+                              margin: 0 0 5px;">
+                              
+                              
+                              <div class="card" style="width: auto;">
+                                  <div class="card-body">
+                                    <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                    <p class="card-text">{{ tasks[task].summary }}</p>
+                                    <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                    <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                                  </div>
+        
+                                </div>
+                              
+                                </li>
+                              {%endif%}
+                        {%endfor%}
+                        
+                          </ul>
+                          <ul id="inprogress" style="border: 1px solid #ccc;
+                          border-radius: 5px;
+                          padding: 10px;
+                          width: 18%;
+                          margin: 0 0.5%;
+                          display: inline-block;
+                          vertical-align: top;">
+                          {%for task in range (l)%}
+                              
+                          {%if tasks[task].branch == 'inprogress' and tasks[task].accordion == '6'%}
+                          <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                          padding: 5px;
+                          background: #f5f5f5;
+                          border-radius: 5px;
+                          margin: 0 0 5px;">
+                          
+                          
+                          <div class="card" style="width: auto;">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                <p class="card-text">{{ tasks[task].summary }}</p>
+                                <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                           </div>
+        
+                            </div>
+                          
+                            </li>
+                          {%endif%}
+                    {%endfor%}
+        
+                            </ul>
+                            <ul id="inreview" style="border: 1px solid #ccc;
+                          border-radius: 5px;
+                          padding: 10px;
+                          width: 18%;
+                          margin: 0 0.5%;
+                          display: inline-block;
+                          vertical-align: top;">
+        
+                              {%for task in range (l)%}
+                                                    
+                              {%if tasks[task].branch == 'inreview' and tasks[task].accordion == '6'%}
+                              <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                              padding: 5px;
+                              background: #f5f5f5;
+                              border-radius: 5px;
+                              margin: 0 0 5px;">
+        
+        
+                              <div class="card" style="width: auto;">
+                                  <div class="card-body">
+                                    <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                    <p class="card-text">{{ tasks[task].summary }}</p>
+                                    <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                    <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                                  </div>
+        
+                                </div>
+        
+                                </li>
+                              {%endif%}
+                              {%endfor%}
+                            </ul>
+        
+                            <ul id="done" style="border: 1px solid #ccc;
+                          border-radius: 5px;
+                          padding: 10px;
+                          width: 18%;
+                          margin: 0 0.5%;
+                          display: inline-block;
+                          vertical-align: top;">
+        
+                                {%for task in range (l)%}
+                                                      
+                                {%if tasks[task].branch == 'done' and tasks[task].accordion == '6'%}
+                                <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                                padding: 5px;
+                                background: #f5f5f5;
+                                border-radius: 5px;
+                                margin: 0 0 5px;">
+        
+        
+                                <div class="card" style="width: auto;">
+                                    <div class="card-body">
+                                      <h5 class="card-title">{{ tasks[task].title }}</h5>
+                                      <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                      <p class="card-text">{{ tasks[task].summary }}</p>
+                                      <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                                      <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                                    </div>
+        
+                                  </div>
+        
+                                  </li>
+                                {%endif%}
+                                {%endfor%}
+                            </ul>
+        
+                            <ul id="export" style="border: 1px solid #ccc;
+                  border-radius: 5px;
+                  padding: 10px;
+                  width: 18%;
+                  margin: 0 0.5%;
+                  display: inline-block;
+                  vertical-align: top;">
+
+                        {%for task in range (l)%}
+                                              
+                        {%if tasks[task].branch == 'export' and tasks[task].accordion == '6'%}
+                        <li id="{{ tasks[task].id}}" value = "100"; draggable="true" style="list-style: none;
+                        padding: 5px;
+                        background: #f5f5f5;
+                        border-radius: 5px;
+                        margin: 0 0 5px;">
+
+
+                        <div class="card" style="width: auto;">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ tasks[task].title }}</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"></h6>
+                              <p class="card-text">{{ tasks[task].summary }}</p>
+                              <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
+                              <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              
+                            </div>
+
+                          </div>
+
+                          </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                    
+                        </div>
+                    </div>
+                    </div>
+        </div>
+        
+{% else %}
+<div> Hello, please <a href="{{url_for('login')}}" >Login</a> to continue</div>
+{% endif %}
+      
+<form method="POST" action="" enctype="multipart/form-data" >
+  
+          <input type = 'text' name = 'update1', id = "lion">
+          <input type = 'text' name = 'update2', id = "tiger">
+          <input type = 'text' name="update3", id = "changer">
+          <input id = 'mail', type = "submit"></input>
+
+</form>
+      
+{%endblock content %}

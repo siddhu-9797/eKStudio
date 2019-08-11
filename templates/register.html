@@ -1,0 +1,80 @@
+{% extends "makeup.html"%}
+{% block content %}
+ 
+
+          
+        
+<form method="POST" action="">
+            {{ form.hidden_tag() }}
+                <legend class="form-group container" style="text-align: center">Register Yourself</legend>
+                <div class="form-group container">
+                    
+                  {% if form.username.errors %}
+                  {{ form.username(class="form-control form-control-lg is-invalid", placeholder="Enter a username") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.username.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                    {{ form.username(class="form-control form-control-lg", placeholder="Enter a username") }}
+                  {% endif %}
+                </div>
+
+                <div class="form-group container">
+                    
+                  {% if form.email.errors %}
+                  {{ form.email(class="form-control form-control-lg is-invalid", placeholder="Enter your e-mail") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.email.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                    {{ form.email(class="form-control form-control-lg", placeholder="Enter your e-mail") }}
+                  {% endif %}
+                    
+                </div>
+                <div class="form-group container">
+                    
+                  {% if form.password.errors %}
+                  {{ form.password(class="form-control form-control-lg is-invalid", placeholder="Enter a password") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.password.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                    {{ form.password(class="form-control form-control-lg", placeholder="Enter your password") }}
+                  {% endif %}
+                    
+                </div>
+                <div class="form-group container">
+                    
+                    
+                  {% if form.confirm_password.errors %}
+                  {{ form.confirm_password(class="form-control form-control-lg is-invalid", placeholder="Confirm your password") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.confirm_password.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                    {{ form.confirm_password(class="form-control form-control-lg", placeholder="Confirm your password") }}
+                  {% endif %}
+                   
+                </div>
+              </div>
+              <div class="form-group container">
+                  {{ form.dob.label(class="form-control-label") }}
+                  {{ form.dob(class="form-control form-control-lg", type="date") }}
+                  
+                 
+              </div>
+              
+            <div class="form-group container">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+{%endblock content %}
+
