@@ -86,6 +86,10 @@ function doFunction(itsid){
     {    
         display:none;
     } 
+#changer 
+    {    
+        display:none;
+    } 
 
 
 </style>
@@ -281,7 +285,7 @@ function doFunction(itsid){
                               <p class="card-text">{{ tasks[task].summary }}</p>
                               <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
                               <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
-                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({{tasks[task].id}})">Promote Task</button>
                               
                             </div>
 
@@ -480,7 +484,7 @@ function doFunction(itsid){
                               <p class="card-text">{{ tasks[task].summary }}</p>
                               <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
                               <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
-                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({{ tasks[task].id}});">Promote Task</button>
                               
                             </div>
 
@@ -675,7 +679,7 @@ function doFunction(itsid){
                               <p class="card-text">{{ tasks[task].summary }}</p>
                               <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
                               <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
-                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({{ tasks[task].id}});"Promote Task</button>
                               
                             </div>
 
@@ -871,7 +875,7 @@ function doFunction(itsid){
                               <p class="card-text">{{ tasks[task].summary }}</p>
                               <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
                               <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
-                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({{ tasks[task].id}});">Promote Task</button>
                               
                             </div>
 
@@ -1068,7 +1072,7 @@ function doFunction(itsid){
                               <p class="card-text">{{ tasks[task].summary }}</p>
                               <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
                               <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
-                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({{ tasks[task].id}});">Promote Task</button>
                               
                             </div>
 
@@ -1264,7 +1268,7 @@ function doFunction(itsid){
                               <p class="card-text">{{ tasks[task].summary }}</p>
                               <a href="#" class="card-link">{{ tasks[task].persontodo }}</a>
                               <a href="{{ url_for('post', post_id=tasks[task].id) }}" class="card-link">Expand Post</a>
-                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="doFunction({ tasks[task].id});">Promote Task</button>
+                              <button type="button" class="btn btn-link float-xl-right" data-toggle="modal" data-target="#myModal" onclick="">Promote Task</button>
                               
                             </div>
 
